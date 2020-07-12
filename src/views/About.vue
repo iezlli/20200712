@@ -1,94 +1,60 @@
 <template>
-  <div class="about">
-    sdf1
-    <el-button type="primary" @click="add">添加</el-button>
-    <el-button @click="del">删除</el-button>
-    <el-form :model="list" :rules="rules">
-      <el-form-item  prop="title" label="项目名">
-        <el-input v-model="list.title">sdf</el-input>
-      </el-form-item>
-      <el-form-item  prop="id" label="所属项目">
-        <el-input v-model="list.id">sdf</el-input>
-      </el-form-item>
-
-      <el-form-item v-for="(item2, index2) in list.detail" :key="index2" >
-        <el-checkbox-group v-model="item2.group">
-          <el-checkbox v-for="(item, index) in dictInfo" :key="index" :value="item.type" :label="item.name"></el-checkbox>
-        </el-checkbox-group>
-          <div style="margin-top: 20px">
-            <el-input v-model="item2.cardId"></el-input>
-            <el-input v-model="item2.range"></el-input>
-          </div>
-        
-      </el-form-item>
-
-
-    </el-form>
-  </div>
+    <div class="about">
+      <el-button @click="handletransferData">随机袋数据</el-button>
+      <el-button @click="handletransferDataC">带确定数据</el-button>
+      <el-button @click="handletransferDataE">带空数据</el-button>
+      <el-button @click="handletransferDataA">带全数据</el-button>
+      <lzl-dialog :dataorg="data" :visible="visible" @handleconfirm="handleconfirm" @handleCancel="visible=false"></lzl-dialog>
+    </div>
 </template>
 
 <script>
+import lzlDialog from './lzlDialog.vue'
 export default {
-  data() {
-    return {
-      rules:{
-        title:[{
-          required: true, message:'不为空', trigger:'blur'
-        }]
-      },
-      list:{
-        title:'',
-        id:'',
-        detail: [{
-          cardid: '',
-          range:'',
-          group:[]
-
-        }]
-      },
-      dictInfo : [{
-        type:'00',
-        name: '单选'
-      },{
-        type:'01',
-        name: '多选'
-      },{
-        type:'02',
-        name: '不定项'
-      },{
-        type:'03',
-        name: '简答'
-      },{
-        type:'04',
-        name: '编程'
-      },{
-        type:'05',
-        name: '数据库'
-      },]
-    }
-  },
-  methods: {
-    add() {
-      this.list.detail.push({
-        cardId: '',
-        range: '',
-        group: []
-      })
-      
+    components: {
+        lzlDialog
     },
-    del() {
-  this.list.detail.pop()      
+    data() {
+        return {
+            data: [],
+            visible: false
+        };
+    },
+    methods: {
+        handleconfirm(data) {
+            alert(data)
+        },
+        handletransferData() {
+            var arr=[['9'],['1'],['2'],['1','2']]
+            this.data = arr[Math.floor(Math.random()*4)]
+            this.visible  = true
+        },
+        handletransferDataC() {
+            // var arr=[['9'],['1'],['2'],['1','2']]
+            this.data = ['2']
+            this.visible  = true
+        },
+        handletransferDataE() {
+            // var arr=[['9'],['1'],['2'],['1','2']]
+            this.data = []
+            this.visible  = true
+        },
+        handletransferDataA() {
+            // var arr=[['9'],['1'],['2'],['1','2']]
+            this.data = ['1','2','3']
+            this.visible  = true
+        }
+        
     }
-  }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-$color : red;
+$color: red;
 .about {
-  border: 1px solid $color;
-  &::before {
-    content: '';
-  }
+    border: 1px solid $color;
+    &::before {
+        content: "";
+    }
 }
 </style>
